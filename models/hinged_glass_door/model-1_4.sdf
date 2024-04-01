@@ -54,7 +54,7 @@
           <iyz>0.0000</iyz>
           <izz>3.0298</izz>
         </inertia>
-      </inertial> 
+      </inertial>
       <collision name="collision">
         <pose>0.4569 0.0349 1.016 0 0 0</pose>
         <geometry>
@@ -64,15 +64,23 @@
         </geometry>
       </collision>
 
-      <material>
-        <script>
-          <name>Gazebo/BlueTransparent</name>
-          <uri>file://media/materials/scripts/gazebo.material</uri>
-        </script>
-      </material>
+      <visual name="visual">
+	<pose>0.4569 0.0349 1.016 0 0 0</pose>
+	<material>
+          <script>
+            <name>Gazebo/BlueTransparent</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+	</material>
+        <geometry>
+	  <box>
+            <size>0.9144 0.04445 2.032</size>
+          </box>
+        </geometry>
+      </visual>
 
     </link>
-    
+
     <link name="handles">
       <pose>0.0 0.8 1.05 0 3.14 1.57</pose>
       <collision name="handle1_collision">
