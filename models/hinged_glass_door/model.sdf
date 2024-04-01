@@ -61,10 +61,9 @@
       <visual name="visual">
 	<pose>0.4569 0.0349 1.016 0 0 0</pose>
 	<material>
-          <script>
-            <name>Gazebo/BlueTransparent</name>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-          </script>
+         <ambient>0.15 0.2 0.78 0.2</ambient>
+         <diffuse>0.15 0.2 0.78 0.2</diffuse>
+         <specular>0.15 0.2 0.78 0.2</specular>
 	</material>
         <geometry>
 	  <box>
