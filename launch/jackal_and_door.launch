@@ -30,4 +30,13 @@
     <arg name="config" value="$(arg config)" />
     <arg name="joystick" value="$(arg joystick)" />
   </include>
+
+  <node pkg="image_view" type="image_view" name="left_image_view">
+    <remap from="image" to="/front/left/image_raw"/>
+  </node>
+
+  <node pkg="image_view" type="image_view" name="right_image_view">
+    <remap from="image" to="/front/right/image_raw"/>
+  </node>
+
 </launch>
