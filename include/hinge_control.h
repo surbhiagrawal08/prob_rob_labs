@@ -8,12 +8,15 @@ namespace gazebo {
     public:
         void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf) override;
         void torqueCallback(const std_msgs::Float64::ConstPtr& msg);
+        void OnUpdate();
 
     private:
         physics::ModelPtr model;
         physics::JointPtr joint;
         ros::NodeHandlePtr rosNode;
         ros::Subscriber torqueSub;
+        event::ConnectionPtr updateConnection;
+        double torque;
     };
 
 }
