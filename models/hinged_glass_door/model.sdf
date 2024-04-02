@@ -170,5 +170,7 @@
         </ode>
       </physics>
     </joint>
+    <plugin name="hinge_control_plugin" filename="libhinge_control.so">
+    </plugin>
   </model>
 </sdf>
