@@ -63,4 +63,4 @@ rostopic echo /foo
 
 10. Install Jackal packages from Clearpath:
 
-sudo apt install ros-noetic-jackal-description ros-noetic-jackal-control ros-noetic-jackal-msgs ros-noetic-jackal-gazebo ros-noetic-jackal-navigation ros-noetic-jackal-simulator ros-noetic-jackal-tutorials ros-noetic-jackal-viz ros-noetic-image-view
+sudo apt install ros-noetic-jackal-description ros-noetic-jackal-control ros-noetic-jackal-msgs ros-noetic-jackal-gazebo ros-noetic-jackal-navigation ros-noetic-jackal-simulator ros-noetic-jackal-tutorials ros-noetic-jackal-viz ros-noetic-image-view ros-noetic-opencv-apps
