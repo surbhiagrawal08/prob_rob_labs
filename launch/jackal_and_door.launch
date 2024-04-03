@@ -23,7 +23,7 @@
 
   <!-- Spawn Jackal -->
   <include file="$(find jackal_gazebo)/launch/spawn_jackal.launch">
-    <arg name="x" value="0" />
+    <arg name="x" value="-1.5" />
     <arg name="y" value="0" />
     <arg name="z" value="0.2" />
     <arg name="yaw" value="0" />

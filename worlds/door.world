@@ -47,6 +47,26 @@
       <uri>model://hinged_glass_door</uri>
       <pose>1.0 0.5 0.0 0.0 0.0 3.14159265</pose>
     </include>
+    <include>
+      <name>wall1</name>
+      <uri>model://glass_wall_segment</uri>
+      <pose>1.0 1.07 0.0 0.0 0.0 0.0</pose>
+    </include>
+    <include>
+      <name>wall2</name>
+      <uri>model://glass_wall_segment</uri>
+      <pose>1.0 -1.0 0.0 0.0 0.0 0.0</pose>
+    </include>
+    <include>
+      <name>wall3</name>
+      <uri>model://glass_wall_segment</uri>
+      <pose>1.0 -2.0 0.0 0.0 0.0 0.0</pose>
+    </include>
+    <include>
+      <name>wall4</name>
+      <uri>model://glass_wall_segment</uri>
+      <pose>1.0 2.07 0.0 0.0 0.0 0.0</pose>
+    </include>
     <gui fullscreen='0'>
       <camera name='user_camera'>
         <pose>7.50654 2.86667 3.46439 0 0.359642 -2.63181</pose>
