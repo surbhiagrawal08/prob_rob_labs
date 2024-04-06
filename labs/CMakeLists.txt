@@ -10,6 +10,8 @@ catkin_package()
 
 roslaunch_add_file_check(launch/jackal_and_door.launch)
 
+catkin_python_setup()
+
 install(DIRECTORY launch worlds
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
