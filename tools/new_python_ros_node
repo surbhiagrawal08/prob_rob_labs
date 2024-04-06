@@ -1,0 +1,110 @@
+#!/bin/bash
+
+function usage() {
+    echo "new_python_ros_node [-h|?] <name>"
+    echo ""
+    echo "Create new boilerplate ROS node"
+    echo ""
+    echo "<name> = name of the new node"
+    echo "Options:"
+    echo "    -h|? : this help"
+    echo ""
+}
+
+while getopts hw:? arg; do
+    case $arg in
+        [?])
+            usage
+            exit 1
+            ;;
+        [h])
+            usage
+            exit 0
+            ;;
+        \?)
+            echo "invalid option $OPTARG" 1>%2
+            exit 1
+            ;;
+        :)
+            echo "Invalid option: $OPTARG requires an argument" 1>&2
+            exit 1
+            ;;
+        *)
+            echo "ERROR: unrecognized option ($arg)" 1>&2
+            usage
+            exit 2
+            ;;
+    esac
+done
+shift $(($OPTIND - 1))
+
+if [ -z "$1" ]; then
+    usage
+    exit 1
+else
+    node_name=${1,,}
+fi
+
+target_dir=$(rospack find prob_rob_labs)
+
+if [ -d "$target_dir/src/$node_name" ]; then
+    echo "node $node_name already exists"
+    echo
+    exit 2
+fi
+
+echo "Creating node $node_name"
+
+echo "add install rule to CMakeLIsts.txt"
+NEW_TEXT="catkin_install_python(PROGRAMS bin\/$node_name\n                      DESTINATION \${CATKIN_PACKAGE_BIN_DESTINATION})\n"
+sed -i "0,/^catkin_install_python.*/s/^catkin_install_python.*/$NEW_TEXT\n&/" $target_dir/CMakeLists.txt
+
+echo "create the entry point file in bin/"
+NEW_FILE="$target_dir/bin/$node_name"
+echo "#!/usr/bin/env python" > $NEW_FILE
+echo "from $node_name import $node_name" >> $NEW_FILE
+echo "" >> $NEW_FILE
+echo "if __name__ == '__main__':" >> $NEW_FILE
+echo "    $node_name.main()" >> $NEW_FILE
+chmod a+x $NEW_FILE
+
+echo "create the launch file"
+NEW_FILE="$target_dir/launch/$(echo $node_name).launch"
+echo "<?xml version=\"1.0\"?>" > $NEW_FILE
+echo "<launch>" >> $NEW_FILE
+echo "  <node pkg=\"prob_rob_labs\" type=\"$node_name\" name=\"$node_name\" output=\"screen\">" >> $NEW_FILE
+echo "  </node>" >> $NEW_FILE
+echo "</launch>" >> $NEW_FILE
+
+echo "add the module to the setup"
+NEW_TEXT=", '$node_name'"
+sed -i "0,/packages=.*/s/],/$NEW_TEXT&/" $target_dir/setup.py
+
+echo "create the source directory"
+src_dir=$target_dir/src/$node_name
+mkdir -p $src_dir
+
+echo "create __init__.py source file"
+NEW_FILE=$src_dir/__init__.py
+echo "# Python __init__.py, makes this directory a module do not remove." > $NEW_FILE
+echo "# See https://docs.python.org/2/tutorial/modules.html for details" >> $NEW_FILE
+chmod a+x $NEW_FILE
+
+echo "create main entry point source file"
+NEW_FILE=$src_dir/$node_name.py
+echo "#!/usr/bin/env python" > $NEW_FILE
+echo "" >> $NEW_FILE
+echo "import rospy" >> $NEW_FILE
+echo "" >> $NEW_FILE
+echo "" >> $NEW_FILE
+echo "def main():" >> $NEW_FILE
+echo "    rospy.init_node('$node_name')" >> $NEW_FILE
+echo "    rospy.loginfo('starting $node_name')" >> $NEW_FILE
+echo "    rospy.spin()" >> $NEW_FILE
+echo "    rospy.loginfo('done')" >> $NEW_FILE
+echo "" >> $NEW_FILE
+echo "if __name__=='__main__':" >> $NEW_FILE
+echo "    main()" >> $NEW_FILE
+chmod a+x $NEW_FILE
+
+echo "whew!"
