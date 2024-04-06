@@ -35,8 +35,9 @@
     <remap from="image" to="/front/left/image_raw"/>
   </node>
 
-  <node pkg="image_view" type="image_view" name="right_image_view">
-    <remap from="image" to="/front/right/image_raw"/>
-  </node>
+  <include file="$(find opencv_apps)/launch/goodfeature_track.launch">
+    <arg name="max_corners" value="25"/>
+    <arg name="image" value="/front/left/image_raw"/>
+  </include>
 
 </launch>
