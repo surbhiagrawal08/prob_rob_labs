@@ -1,0 +1,66 @@
+1. Install Distrobox:
+
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sh -s -- --prefix ~/.local
+
+add ~/.local to $PATH
+
+2. Create distrobox container
+
+distrobox create -i ros:noetic-desktop-full -n noetic
+
+3. Enter it
+
+distrobox enter noetic
+
+4. Install some preliminary packages
+
+sudo apt install lsb-release
+sudo apt install emacs vim
+sudo apt install python-is-python3 git gitk
+
+5. Add ROS repository and install ROS
+
+sudo su -
+<root>: echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list
+<root>: curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+<root>: apt update -y
+<root>: apt install -y ros-noetic-desktop-full
+<root>: apt install python3-rosdep
+<root>: rm -f /etc/ros/rosdep/sources.list.d/20-default.list
+<root>: rosdep init
+<root>: ^D
+
+6. Run rosdep update (as regular user)
+
+rosdep update
+
+7. Add this to bashrc:
+
+DISTROBOX_HOSTNAME=$(hostname)
+if [ "$DISTROBOX_HOSTNAME" = "focal.micro-dev" ]; then
+	source /opt/ros/noetic/setup.bash
+	if [ -f /run/host/workdir/ROS/catkin_ws/devel/setup.bash ]; then
+		source /run/host/workdir/ROS/catkin_ws/devel/setup.bash
+	fi
+	export ROS_HOSTNAME=localhost
+	export ROS_MASTER_URI=http://localhost:11311
+	alias go_catkin='cd /run/host/workdir/ROS/catkin_ws'
+	export DISPLAY="$(ip -f inet addr show $(ip link  | grep enp | awk '{print $2}' | sed 's/://') | grep inet | awk '{print $2}' | awk -F '/' '{print $1}')$DISPLAY"
+fi
+
+8. Setup catkin workspace
+
+mkdir -p /run/host/workdir/ROS/catkin_ws/src
+go_catkin
+catkin_make
+
+9. Log out and log back in for the environment to take place and test
+
+roscore
+rostopic pub -r 10 /foo std_msgs/String "foo string"
+rostopic list
+rostopic echo /foo
+
+10. Install Jackal packages from Clearpath:
+
+sudo apt install ros-noetic-jackal-description ros-noetic-jackal-control ros-noetic-jackal-msgs ros-noetic-jackal-gazebo ros-noetic-jackal-navigation ros-noetic-jackal-simulator ros-noetic-jackal-tutorials ros-noetic-jackal-viz ros-noetic-image-view ros-noetic-opencv-apps

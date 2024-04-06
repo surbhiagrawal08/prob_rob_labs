@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lab_gazebo_models</name>
+  <version>0.0.1</version>
+  <description>Common models for all labs</description>
+  <maintainer email="ih2435@columbia.edu">Ilija Hadzic</maintainer>
+  <license>Creative Commons</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>gazebo_ros</depend>
+  <depend>roslaunch</depend>
+  <export>
+    <gazebo_ros gazebo_model_path="${prefix}/models"/>
+    <gazebo_ros gazebo_media_path="${prefix}"/>
+  </export>
+</package>
