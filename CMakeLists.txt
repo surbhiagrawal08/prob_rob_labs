@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(lab_bayes_filter)
+project(prob_rob_labs)
 
 find_package(catkin REQUIRED COMPONENTS roslaunch)
 

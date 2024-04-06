@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>lab_bayes_filter</name>
+  <name>prob_rob_labs</name>
   <version>0.0.1</version>
-  <description>Demonstrates the use of bayes filter to decide whether the door is open. Background reading: Chatper 1 in Thrun</description>
+  <description>A set of lab exercises for Probabilistic Robotics course. Department of Electrical Engineering, Columbia University</description>
 
   <maintainer email="ih2435@columbia.edu">Ilija Hadzic</maintainer>
   <author>Ilija Hadzic</author>

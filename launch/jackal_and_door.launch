@@ -3,7 +3,7 @@
   <arg name="use_sim_time" default="true" />
   <arg name="gui" default="true" />
   <arg name="headless" default="false" />
-  <arg name="world_name" default="$(find lab_bayes_filter)/worlds/door.world" />
+  <arg name="world_name" default="$(find prob_rob_labs)/worlds/door.world" />
 
   <!-- Configuration of Jackal which you would like to simulate.
        See jackal_description for details. -->
