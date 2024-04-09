@@ -40,4 +40,7 @@
   <include file="$(find prob_rob_labs)/launch/image_mean_feature_x.launch">
   </include>
 
+  <include file="$(find prob_rob_labs)/launch/flaky_door_opener.launch">
+  </include>
+
 </launch>
