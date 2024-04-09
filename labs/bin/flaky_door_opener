@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+from flaky_door_opener import flaky_door_opener
+
+if __name__ == '__main__':
+    flaky_door_opener.main()
