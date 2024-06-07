@@ -2,7 +2,6 @@
 <launch>
   <arg name="use_sim_time" default="true" />
   <arg name="gui" default="true" />
-  <arg name="headless" default="false" />
   <arg name="world_name" default="door" />
   <arg name="run_door_opener" default="false" />
   <arg name="run_image_viewer" default="false" />
@@ -17,7 +16,6 @@
     <arg name="debug" value="0" />
     <arg name="gui" value="$(arg gui)" />
     <arg name="use_sim_time" value="$(arg use_sim_time)" />
-    <arg name="headless" value="$(arg headless)" />
     <arg name="world_name" value="$(find prob_rob_labs)/worlds/$(arg world_name).world" />
   </include>
 

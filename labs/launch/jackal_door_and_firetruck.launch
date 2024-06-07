@@ -2,7 +2,6 @@
 <launch>
   <arg name="use_sim_time" default="true" />
   <arg name="gui" default="true" />
-  <arg name="headless" default="false" />
   <arg name="world_name" default="door_and_firetruck" />
   <arg name="config" default="front_bumblebee2" />
 
@@ -11,7 +10,6 @@
   <include file="$(find prob_rob_labs)/launch/jackal_and_door.launch">
     <arg name="use_sim_time" value="$(arg use_sim_time)" />
     <arg name="gui" value="$(arg gui)" />
-    <arg name="headless" value="$(arg headless)" />
     <arg name="world_name" value="$(arg world_name)" />
   </include>
 </launch>
