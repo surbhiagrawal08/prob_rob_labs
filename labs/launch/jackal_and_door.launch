@@ -4,6 +4,9 @@
   <arg name="gui" default="true" />
   <arg name="headless" default="false" />
   <arg name="world_name" default="door" />
+  <arg name="run_door_opener" default="false" />
+  <arg name="run_image_viewer" default="false" />
+  <arg name="run_vision_processor" default="false" />
 
   <!-- Configuration of Jackal which you would like to simulate.
        See jackal_description for details. -->
@@ -28,19 +31,24 @@
     <arg name="joystick" value="false" />
   </include>
 
-  <node pkg="image_view" type="image_view" name="left_image_view">
-    <remap from="image" to="/front/left/image_raw"/>
-  </node>
+  <group if="$(arg run_image_viewer)">
+    <node pkg="image_view" type="image_view" name="left_image_view">
+      <remap from="image" to="/front/left/image_raw"/>
+    </node>
+  </group>
 
-  <include file="$(find opencv_apps)/launch/goodfeature_track.launch">
-    <arg name="max_corners" value="25"/>
-    <arg name="image" value="/front/left/image_raw"/>
-  </include>
+  <group if="$(arg run_vision_processor)">
+    <include file="$(find opencv_apps)/launch/goodfeature_track.launch">
+      <arg name="max_corners" value="25"/>
+      <arg name="image" value="/front/left/image_raw"/>
+    </include>
+    <include file="$(find prob_rob_labs)/launch/image_mean_feature_x.launch">
+    </include>
+  </group>
 
-  <include file="$(find prob_rob_labs)/launch/image_mean_feature_x.launch">
-  </include>
-
-  <include file="$(find prob_rob_labs)/launch/flaky_door_opener.launch">
-  </include>
+  <group if="$(arg run_door_opener)">
+    <include file="$(find prob_rob_labs)/launch/flaky_door_opener.launch">
+    </include>
+  </group>
 
 </launch>
