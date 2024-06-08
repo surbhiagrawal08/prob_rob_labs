@@ -4,6 +4,9 @@
   <arg name="gui" default="true" />
   <arg name="world_name" default="door_and_firetruck" />
   <arg name="config" default="front_bumblebee2" />
+  <arg name="run_door_opener" default="false" />
+  <arg name="run_image_viewer" default="false" />
+  <arg name="run_vision_processor" default="false" />
 
   <!-- Fully reuse jackal_and_door, but change the default world name
        to door_and_firetruck. -->
@@ -11,5 +14,8 @@
     <arg name="use_sim_time" value="$(arg use_sim_time)" />
     <arg name="gui" value="$(arg gui)" />
     <arg name="world_name" value="$(arg world_name)" />
+    <arg name="run_door_opener" value="$(arg run_door_opener)" />
+    <arg name="run_image_viewer" default="$(arg run_image_viewer)" />
+    <arg name="run_vision_processor" default="$(arg run_vision_processor)" />
   </include>
 </launch>
