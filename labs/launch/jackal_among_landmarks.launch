@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="use_sim_time" default="true" />
+  <arg name="gui" default="true" />
+  <arg name="world_name" default="landmarks" />
+  <arg name="run_image_viewer" default="false" />
+
+  <!-- Configuration of Jackal which you would like to simulate.
+       See jackal_description for details. -->
+  <arg name="config" default="front_bumblebee2" />
+
+  <!-- Launch Gazebo with the specified world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="0" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="use_sim_time" value="$(arg use_sim_time)" />
+    <arg name="world_name" value="$(find prob_rob_labs)/worlds/$(arg world_name).world" />
+  </include>
+
+  <!-- Spawn Jackal -->
+  <include file="$(find jackal_gazebo)/launch/spawn_jackal.launch">
+    <arg name="x" value="-1.5" />
+    <arg name="y" value="0" />
+    <arg name="z" value="0.05" />
+    <arg name="yaw" value="0" />
+    <arg name="config" value="$(arg config)" />
+    <arg name="joystick" value="false" />
+  </include>
+
+  <group if="$(arg run_image_viewer)">
+    <node pkg="image_view" type="image_view" name="left_image_view">
+      <remap from="image" to="/front/left/image_raw"/>
+    </node>
+  </group>
+
+</launch>
