@@ -13,9 +13,10 @@
       <visual name="visual">
         <cast_shadows>true</cast_shadows>
         <geometry>
-          <box>
-            <size>0.1 0.1 1</size>
-          </box>
+          <cylinder>
+            <radius>0.1</radius>
+	    <height>1</height>
+          </cylinder>
         </geometry>
 	<material>
 	  <ambient>1 0.0 0.0 1</ambient>
