@@ -48,6 +48,11 @@
       <uri>model://red_landmark</uri>
       <pose>0 0 0 0 0 0</pose>
     </include>
+    <include>
+      <name>landmark_2</name>
+      <uri>model://green_landmark</uri>
+      <pose>1 1 0 0 0 0</pose>
+    </include>
     <gui fullscreen='0'>
       <camera name='user_camera'>
         <pose>-6.71 3.52 4.23 0 0.45 -0.42</pose>
