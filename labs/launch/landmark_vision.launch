@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="nodelet" type="nodelet" name="landmark_vision" args="manager">
+    <param name="num_worker_threads" value="8"/>
+  </node>
+  <node pkg="nodelet" type="nodelet" name="hsv_green"
+        args="load opencv_apps/hsv_color_filter landmark_vision">
+    <remap from="image" to="front/left/image_raw"/>
+    <param name="h_limit_max" value="122"/>
+    <param name="h_limit_min" value="118"/>
+  </node>
+  <node pkg="nodelet" type="nodelet" name="goodfeature_green"
+        args="load opencv_apps/goodfeature_track landmark_vision">
+    <remap from="image" to="hsv_green/image"/>
+    <param name="max_corners" value="4"/>
+  </node>
+  <node pkg="nodelet" type="nodelet" name="hsv_red"
+        args="load opencv_apps/hsv_color_filter landmark_vision">
+    <remap from="image" to="front/left/image_raw"/>
+    <param name="h_limit_max" value="7"/>
+    <param name="h_limit_min" value="3"/>
+  </node>
+  <node pkg="nodelet" type="nodelet" name="goodfeature_red"
+        args="load opencv_apps/goodfeature_track landmark_vision">
+    <remap from="image" to="hsv_red/image"/>
+    <param name="max_corners" value="4"/>
+  </node>
+</launch>
