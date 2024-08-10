@@ -20,9 +20,9 @@
           </cylinder>
         </geometry>
 	<material>
-	  <ambient>1 0.0 0.0 1</ambient>
-	  <diffuse>1 0.0 0.0 1</diffuse>
-	  <specular>1 0.0 0.0 1</specular>
+	  <ambient>1 0.08 0.0 1</ambient>
+	  <diffuse>1 0.08 0.0 1</diffuse>
+	  <specular>1 0.08 0.0 1</specular>
 	</material>
       </visual>
     </link>
