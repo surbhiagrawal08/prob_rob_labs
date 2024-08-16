@@ -16,7 +16,7 @@
         <geometry>
           <cylinder>
             <radius>0.1</radius>
-	    <height>1</height>
+	    <length>0.5</length>
           </cylinder>
         </geometry>
 	<material>
