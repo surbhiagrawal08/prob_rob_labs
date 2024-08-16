@@ -59,14 +59,14 @@
         </geometry>
       </collision>
       <visual name="visual">
-	<pose>0.4569 0.0349 1.016 0 0 0</pose>
-	<material>
+        <pose>0.4569 0.0349 1.016 0 0 0</pose>
+        <material>
          <ambient>0.15 0.2 0.78 0.2</ambient>
          <diffuse>0.15 0.2 0.78 0.2</diffuse>
          <specular>0.15 0.2 0.78 0.2</specular>
-	</material>
+        </material>
         <geometry>
-	  <box>
+          <box>
             <size>0.9144 0.04445 2.032</size>
           </box>
         </geometry>
