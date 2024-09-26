@@ -10,6 +10,11 @@
   <!-- Configuration of Jackal which you would like to simulate.
        See jackal_description for details. -->
   <arg name="config" default="front_bumblebee2" />
+  <arg name="x" default="-1.5" />
+  <arg name="y" default="0" />
+  <arg name="z" default="0.05" />
+  <arg name="yaw" default="0" />
+
 
   <!-- Launch Gazebo with the specified world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -21,10 +26,10 @@
 
   <!-- Spawn Jackal -->
   <include file="$(find jackal_gazebo)/launch/spawn_jackal.launch">
-    <arg name="x" value="-1.5" />
-    <arg name="y" value="0" />
-    <arg name="z" value="0.05" />
-    <arg name="yaw" value="0" />
+    <arg name="x" value="$(arg x)" />
+    <arg name="y" value="$(arg y)" />
+    <arg name="z" value="$(arg z)" />
+    <arg name="yaw" value="$(arg yaw)" />
     <arg name="config" value="$(arg config)" />
     <arg name="joystick" value="false" />
   </include>
