@@ -9,12 +9,16 @@ from geometry_msgs.msg import Twist
     #rospy.loginfo(f"torque: {current_torque_value}")
 
 def open_door_and_move():
-    pub1 = rospy.Publisher('/hinged_glass_door/torque', Float64, queue_size=10) #what does queue do here?
+    pub1 = rospy.Publisher('/hinged_glass_door/torque', Float64, queue_size=10)
+    
+    #what does queue do here?
     #rospy.loginfo('pub1: {pub1.data}')
     pub2  = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
     rate = rospy.Rate(10)
     torque_command = Float64()  #% rospy.get_time()
-    torque_command.data = 1.5 #*(rospy.get_time()%10)
+    torque_command_param =float(rospy.get_param('~/open_door_and_move/torque_command_param', 5.0))
+    #torque_command.data = 5
+    torque_command.data = torque_command_param #*(rospy.get_time()%10)
     rospy.loginfo('I am about to publish {}'.format(torque_command))
     rospy.sleep(.1)
     for i in range(3):

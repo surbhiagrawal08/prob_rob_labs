@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<launch>
+<launch>       
+  <arg name="torque" default="1.5"/>
   <node pkg="prob_rob_labs" type="open_door_and_move" name="open_door_and_move" output="screen">
-  </node>
+    <param name="torque_command_param" value="$(arg torque)"/>
+ </node>
 </launch>
