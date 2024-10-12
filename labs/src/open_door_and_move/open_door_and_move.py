@@ -4,58 +4,94 @@ import rospy
 from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
 
-#def torque_callback(msg):
-    #current_torque_value = msg.data
-    #rospy.loginfo(f"torque: {current_torque_value}")
+# Global variables for state and time
+state = 0
+now = None
+pub_door = None
+door_open = None
 
-def open_door_and_move():
-    pub1 = rospy.Publisher('/hinged_glass_door/torque', Float64, queue_size=10)
-    
-    #what does queue do here?
-    #rospy.loginfo('pub1: {pub1.data}')
-    pub2  = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
-    rate = rospy.Rate(10)
-    torque_command = Float64()  #% rospy.get_time()
-    torque_command_param =float(rospy.get_param('~/open_door_and_move/torque_command_param', 5.0))
-    #torque_command.data = 5
-    torque_command.data = torque_command_param #*(rospy.get_time()%10)
-    rospy.loginfo('I am about to publish {}'.format(torque_command))
-    rospy.sleep(.1)
-    for i in range(3):
-        pub1.publish(torque_command)
-        rospy.sleep(0.1)
-    #rospy.Subscriber('/hinged_glass_door/torque', Float64, torque_callback)
-    rospy.sleep(10)
-    rospy.loginfo('preparing to move')
-    cmd_vel = Twist()
-    cmd_vel.linear.x = 0.5
-    cmd_vel.angular.z = 0
-    for i in range(100):
+def feature_mean_callback(msg):
+    global door_open
+    door_open = msg.data
+
+def log_state():
+    rospy.loginfo(f"Current state: {state}")
+
+def state_machine(event):
+    global state, now, pub_door, pub2
+
+    log_state()
+
+    # State 0: Initialize and set the time
+    if state == 0:
+        now = rospy.get_rostime()  # Record the current time
+        state = 1  # Transition to state 1
+        return
+
+    # State 1: Wait for 0.5 seconds before moving to next state
+    if state == 1:
+        delta_t = rospy.get_rostime() - now  # Calculate elapsed time
+        if delta_t.to_sec() > 0.5:  # Wait for 0.5 seconds
+            state = 2  # Transition to state 2
+        return
+
+    # State 2: Open door by publishing torque command
+    if state == 2:
+        rospy.loginfo("Opening the door")
+        pub_door.publish(Float64(10))  # Apply torque to open door
+        now = rospy.get_rostime()  # Reset the timer
+        state = 3  # Transition to state 3
+        return
+
+    # State 3: Wait for 10 seconds with the door open
+    if state == 3:
+        #delta_t = rospy.get_rostime() - now  # Calculate elapsed time
+        #if delta_t.to_sec() > 10.0:  # Wait for 10 seconds
+        if door_open<=450:
+            state = 4  # Transition to state 4
+            now = rospy.get_rostime()
+        return
+
+
+    if state == 4:
+        cmd_vel = Twist()
+        rospy.loginfo("Moving the vehicle")
+        delta_t = rospy.get_rostime() - now
+        cmd_vel.linear.x = 0.5
+        cmd_vel.angular.z = 0
         pub2.publish(cmd_vel)
-        rate.sleep()
+        if delta_t.to_sec() > 10.0:
+            state = 5
+        return
+    # State 5: Close the door by applying reverse torque
+    if state == 5:
+        rospy.loginfo("Closing the door")
+        pub_door.publish(Float64(-5))  # Apply reverse torque to close door
+        state = 6  # Transition to stopping state
+        return
 
-    cmd_vel.linear.x = 0.0
-    pub2.publish(cmd_vel)
-    rospy.loginfo('moved through and now stopping')
-    rospy.sleep(2)
-    rospy.loginfo('closing the door')
-    torque_command.data = -1.5
-    pub1.publish(torque_command)
-    rate.sleep()
-
-        
-
+    # State 6: End the operation
+    if state == 6:
+        rospy.loginfo("Operation complete, stopping")
+        rospy.signal_shutdown("State machine finished")  # Stop the node
 
 def main():
-    #global pub_door
-    rospy.init_node('open_door_and_move') #rospy.init_node('open_door_and_move')
-    rospy.loginfo('starting open_door_and_move')
-    open_door_and_move()
-    #pub_door = rospy.Publisher('/hinged_glass_door/torque', Float64, queue_size=10)
-    #pub_door = rospy.Publisher('/hinged_glass_door/torque', Float64, queue_size=10)
-    #timer=rospy.Timer(rospy.Duration(0.1), heartbeat)
-    rospy.spin()
-    rospy.loginfo('done')
+    global pub_door, pub2
 
-if __name__=='__main__':
+    rospy.init_node('open_door_and_move')
+    
+    # Publishers
+    pub_door = rospy.Publisher('/hinged_glass_door/torque', Float64, queue_size=10)
+    pub2  = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+    rospy.Subscriber('/feature_mean', Float64, feature_mean_callback)
+    
+    rospy.loginfo('Starting state machine')
+
+    # Timer setup (calls state_machine every 0.1 seconds)
+    rospy.Timer(rospy.Duration(0.1), state_machine)
+
+    # Keep the program alive until the state machine finishes
+    rospy.spin()
+
+if __name__ == '__main__':
     main()
