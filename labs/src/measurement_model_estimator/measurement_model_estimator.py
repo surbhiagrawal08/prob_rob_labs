@@ -4,7 +4,7 @@ import rospy
 from std_msgs.msg import Float64
 
 feature_mean = None
-threshold = 455
+threshold = 452
 open = 0
 closed = 0
 pub_closed = None
@@ -24,7 +24,7 @@ def counter_publisher(event):
 
     pub_closed.publish(Float64(closed))
     pub_open.publish(Float64(open))
-    rospy.loginfo('im here')
+    #rospy.loginfo('im here')
     pass
 
 

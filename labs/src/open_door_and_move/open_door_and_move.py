@@ -3,22 +3,38 @@
 import rospy
 from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
+import numpy as np
 
 # Global variables for state and time
 state = 0
 now = None
 pub_door = None
 door_open = None
+i = 0
+
+belief = np.array([[0.5], [0.5]]) #open, closed
+#Measurement_Matrix = np.array([[1223/1230, 72/1181], [7/1230, 1109/1181]]) #found using measurement node, order=open, closed
+Measurement_Matrix = np.array([[744/(549+744), 357/(911+357)], [549/(549+744), 911/(357+911)]])
 
 def feature_mean_callback(msg):
     global door_open
     door_open = msg.data
 
+
 def log_state():
     rospy.loginfo(f"Current state: {state}")
 
+def bayesian_inference(Measurement_Matrix, measurement):
+    global belief
+    un_normalized_posterior = (Measurement_Matrix * \
+    np.repeat(belief, 2, axis=1).transpose())[measurement, :]
+    belief = np.array([un_normalized_posterior/sum(un_normalized_posterior)]).transpose()
+    return
+    
+
+
 def state_machine(event):
-    global state, now, pub_door, pub2
+    global state, now, pub_door, pub2, i
 
     log_state()
 
@@ -47,7 +63,18 @@ def state_machine(event):
     if state == 3:
         #delta_t = rospy.get_rostime() - now  # Calculate elapsed time
         #if delta_t.to_sec() > 10.0:  # Wait for 10 seconds
-        if door_open<=450:
+        #if door_open<=455:
+        if door_open<=452:
+            measurement = 0
+        
+        else:
+            measurement = 1
+
+        bayesian_inference(Measurement_Matrix, measurement)
+        i = i+1
+        rospy.loginfo(belief[0])
+        if belief[0]>0.99:
+            rospy.loginfo(i)
             state = 4  # Transition to state 4
             now = rospy.get_rostime()
         return
@@ -74,6 +101,7 @@ def state_machine(event):
     if state == 6:
         rospy.loginfo("Operation complete, stopping")
         rospy.signal_shutdown("State machine finished")  # Stop the node
+        
 
 def main():
     global pub_door, pub2
