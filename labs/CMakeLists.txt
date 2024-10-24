@@ -16,6 +16,9 @@ install(DIRECTORY launch worlds
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
+catkin_install_python(PROGRAMS bin/ground_truth_extractor
+                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
 catkin_install_python(PROGRAMS bin/measurement_model_estimator
                       DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
