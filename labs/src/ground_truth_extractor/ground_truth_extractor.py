@@ -21,8 +21,8 @@ class GroundTruthExtractor:
         gt_pose = PoseStamped()
 
         gt_twist.header.stamp, gt_pose.header.stamp = now, now
-        gt_twist.header.frame_id = "jackal::base_link"
-        gt_pose.header.frame_id = "ground_plane::link"
+        gt_twist.header.frame_id = "base_link"
+        gt_pose.header.frame_id = "odom"
 
         gt_twist.twist = link_states.twist[base_index]
         gt_pose.pose = link_states.pose[base_index]        
