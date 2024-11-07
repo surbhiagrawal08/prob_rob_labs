@@ -7,6 +7,7 @@ from geometry_msgs.msg import Point, Quaternion, Twist
 import numpy as np
 from message_filters import ApproximateTimeSynchronizer, Subscriber
 from tf import transformations
+from std_msgs.msg import Float64
 
 
 class OdometryEKFNode:
@@ -14,6 +15,11 @@ class OdometryEKFNode:
         #rospy.init?
         self.odom_pub = rospy.Publisher('/ekf_odom', Odometry, queue_size=10) 
         imu_sub = Subscriber('/imu/data', Imu) #this is what will be used for prediction
+        self.state_cov_pub1 = rospy.Publisher('/x_var', Float64, queue_size=10)
+        self.state_cov_pub2 = rospy.Publisher('/y_var', Float64, queue_size=10)
+        self.state_cov_pub3 = rospy.Publisher('/theta_var', Float64, queue_size=10)
+        self.state_cov_pub4 = rospy.Publisher('/v_var', Float64, queue_size=10)
+        self.state_cov_pub5 = rospy.Publisher('/w_var', Float64, queue_size=10)
 
         joint_sub = Subscriber('/joint_states', JointState)
         cmd_vel_sub = Subscriber('/cmd_vel', Twist)
@@ -112,7 +118,21 @@ class OdometryEKFNode:
         twist_cov[-1, -1] = self.state_cov[-1, -1]
 
         message.twist.covariance = twist_cov.flatten().tolist()
-
+        msg1 = Float64()
+        msg1.data = self.state_cov[0,0]
+        msg2 = Float64()
+        msg2.data = self.state_cov[1,1]
+        msg3 = Float64()
+        msg3.data = self.state_cov[2,2]
+        msg4 = Float64()
+        msg4.data = self.state_cov[3,3]
+        msg5 = Float64()
+        msg5.data = self.state_cov[4,4]
+        self.state_cov_pub1.publish(msg1)
+        self.state_cov_pub2.publish(msg2)
+        self.state_cov_pub3.publish(msg3)
+        self.state_cov_pub4.publish(msg4)
+        self.state_cov_pub5.publish(msg5)
         self.odom_pub.publish(message)
 
 
