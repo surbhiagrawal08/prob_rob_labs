@@ -16,6 +16,12 @@ install(DIRECTORY launch worlds
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
+catkin_install_python(PROGRAMS bin/corrrespondance_matcher
+                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+catkin_install_python(PROGRAMS bin/pixel_measurement_predictor
+                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
 catkin_install_python(PROGRAMS bin/odometry_error_tracker
                       DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 

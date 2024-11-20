@@ -22,7 +22,7 @@ class GroundTruthExtractor:
 
         gt_twist.header.stamp, gt_pose.header.stamp = now, now
         gt_twist.header.frame_id = "base_link"
-        gt_pose.header.frame_id = "odom"
+        gt_pose.header.frame_id = "odom"  #change to map here
 
         gt_twist.twist = link_states.twist[base_index]
         gt_pose.pose = link_states.pose[base_index]        
