@@ -18,8 +18,15 @@ class Pixel_Measurement_Predictor(): #colour and predicted_measurement should be
         self.gt_sub = rospy.Subscriber('/jackal/ground_truth/pose', PoseStamped, self.prediction_callback)
         self.camera_info_sub = rospy.Subscriber('/front/left/camera_info', CameraInfo, self.camera_info_callback)        
         self.fx = self.fy = self.cx = self.cy = None
-        rospy.set_param('landmark_color', 'green')
-        rospy.set_param('landmark_coordinate', [8.5, 5.])
+        rospy.set_param('landmark_color', 'red')
+        #rospy.set_param('landmark_coordinate', [8.5, 5.])
+        rospy.set_param('landmark_coordinates', {
+            'green': [8.5, 5.0],
+            'red': [8.5, -5.],
+            'magenta': [-11.5, -5.],
+            'yellow': [-11.5, 5.0],
+            'cyan': [0.,0.]
+        })
         self.landmark_color = rospy.get_param('landmark_color')
         self.pixel_predictor = rospy.Publisher('/'+self.landmark_color +'/predicted_corners', Point2DArrayStamped, queue_size=10)
         rospy.loginfo('/'+self.landmark_color +'/predicted_corners')
