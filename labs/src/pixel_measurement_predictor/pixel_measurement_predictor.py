@@ -9,6 +9,8 @@ from sensor_msgs.msg import CameraInfo
 from opencv_apps.msg import Point2DArrayStamped
 from opencv_apps.msg import Point2D
 from tf import transformations
+from message_filters import ApproximateTimeSynchronizer, Subscriber
+from std_msgs.msg import Float64MultiArray
 
 
 
@@ -29,7 +31,9 @@ class Pixel_Measurement_Predictor(): #colour and predicted_measurement should be
         })
         self.landmark_color = rospy.get_param('landmark_color')
         self.pixel_predictor = rospy.Publisher('/'+self.landmark_color +'/predicted_corners', Point2DArrayStamped, queue_size=10)
-        rospy.loginfo('/'+self.landmark_color +'/predicted_corners')
+        #rospy.loginfo('/'+self.landmark_color +'/predicted_corners')
+        self.covariance_sub = rospy.Subscriber('/covariance_matrix', Float64MultiArray, self.prediction_callback)
+        self.error_sub = rospy.Subscriber('/feature_matching_error', Float64MultiArray, self.prediction_callback)
 
         x, y, theta, xl, yl, rl, hl, fx, fy, cx, cy, tx, ty, tz = sp.symbols('x y theta xl yl rl hl fx fy cx cy tx ty tz')
 
@@ -155,7 +159,9 @@ class Pixel_Measurement_Predictor(): #colour and predicted_measurement should be
 
                 pixel_prediction.points = point
 
-                self.pixel_predictor.publish(pixel_prediction)            
+                self.pixel_predictor.publish(pixel_prediction)
+                #rospy.loginfo(self.error_sub.callback)
+        return self.pixel_predictor, gt_pose, self.error_sub.callback, self.covariance_sub        
        
 
     def is_within_bounds(self, u, v):

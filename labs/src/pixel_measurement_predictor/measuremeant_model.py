@@ -9,8 +9,8 @@ T_om = sp.Matrix([[sp.sin(theta), -sp.cos(theta), 0, y*sp.cos(theta)-x*sp.sin(th
                         [sp.cos(theta), sp.sin(theta), 0, -x*sp.cos(theta)-y*sp.sin(theta)-tx],
                         [0, 0, 0, 1]])
 
-xc = T_om[3,0]
-yc = T_om[3,1]
+xc = T_om[0,3]
+yc = T_om[1,3]
 
 psi = sp.atan2(yl-yc, xl-xc)
 
