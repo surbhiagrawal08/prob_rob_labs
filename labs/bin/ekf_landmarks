@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+from ekf_landmarks import ekf_landmarks
+
+if __name__ == '__main__':
+    ekf_landmarks.main()
